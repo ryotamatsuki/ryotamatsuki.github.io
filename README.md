@@ -4,6 +4,7 @@ Personal product portfolio for Civic Tech, AI, Data Visualization and Games.
 
 - Production site: https://ryotamatsuki.github.io/
 - Data-driven project cards: `projects.js`
+- Public repository coverage audit: `docs/REPOSITORY_INVENTORY.md`
 - Layout / responsive UI: `styles.css`
 - Rendering / filtering / search: `app.js`
 - Screenshot inventory and rights decisions: `docs/SCREENSHOT_INVENTORY.md`
@@ -11,7 +12,7 @@ Personal product portfolio for Civic Tech, AI, Data Visualization and Games.
 
 ## Adding a project
 
-Add one object to `window.RYOTA_PROJECTS` in `projects.js`. The grid uses CSS `auto-fit`, so adding or removing cards does not require layout edits.
+Add one object to `window.RYOTA_PROJECTS` in `projects.js`. The grid uses CSS `auto-fit`, so adding or removing cards does not require layout edits. When a new public repository or deployment is created, also update `docs/REPOSITORY_INVENTORY.md` so the portfolio and audit trail stay aligned.
 
 Required fields:
 
@@ -35,6 +36,14 @@ Optional / conditional:
 Streamlit entries must use their public `*.streamlit.app` URL. This prevents the card's Open action from silently falling back to the GitHub repository when an app deployment exists.
 
 When adding an image, first confirm that the screen contains no unlicensed third-party character, mascot, logo, personal information, API key, or private URL. Read `BRAND_ASSET_POLICY.md` and update `docs/SCREENSHOT_INVENTORY.md` when the source or rights decision changes.
+
+## Coverage policy
+
+- Public, independently meaningful works are represented in `projects.js`.
+- Old prototypes, test-named but functional works, versioned experiments and research artifacts live under `archive` rather than disappearing from the portfolio.
+- Empty repositories, forks, exact duplicate repositories and RYOTA LAB itself are not rendered as project cards.
+- Private repository names and metadata are never copied into the public inventory.
+- Ambiguous legacy/test works remain in Archive until the owner explicitly decides to remove them.
 
 ## Design principles
 
