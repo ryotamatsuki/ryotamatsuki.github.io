@@ -1,5 +1,11 @@
 (() => {
-  const projects = Array.isArray(window.RYOTA_PROJECTS) ? window.RYOTA_PROJECTS : [];
+  const sourceProjects = Array.isArray(window.RYOTA_PROJECTS) ? window.RYOTA_PROJECTS : [];
+  const excludedRepoUrls = new Set([
+    "https://github.com/ryotamatsuki/kamijimatest",
+    "https://github.com/ryotamatsuki/kamijimatoshi_v2",
+    "https://github.com/ryotamatsuki/minnnanomachiai"
+  ]);
+  const projects = sourceProjects.filter(project => !excludedRepoUrls.has(project.repoUrl));
   const featuredGrid = document.getElementById("featured-grid");
   const projectGrid = document.getElementById("project-grid");
   const archiveGrid = document.getElementById("archive-grid");
