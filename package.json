@@ -1,0 +1,15 @@
+{
+  "name": "ryota-lab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate:projects": "node scripts/validate-projects.mjs",
+    "validate:static": "node scripts/validate-static.mjs",
+    "validate:links": "node scripts/validate-links.mjs",
+    "qa": "npm run validate:projects && npm run validate:static",
+    "capture:screenshots": "node scripts/capture-screenshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}

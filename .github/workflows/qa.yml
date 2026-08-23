@@ -1,0 +1,33 @@
+name: Portfolio QA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  static-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check projects.js
+          node --check scripts/capture-screenshots.mjs
+          node --check scripts/validate-projects.mjs
+          node --check scripts/validate-static.mjs
+          node --check scripts/validate-links.mjs
+      - name: Validate project data and static assets
+        run: |
+          node scripts/validate-projects.mjs
+          node scripts/validate-static.mjs
