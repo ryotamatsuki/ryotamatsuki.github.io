@@ -38,7 +38,7 @@ window.RYOTA_PROJECTS = [
     host: "Streamlit",
     featured: false,
     visual: "chat",
-    appUrl: null,
+    appUrl: "https://ehime-kokubunsai-ai-poc-9uqr82g7mpllijkeewhky8.streamlit.app/",
     repoUrl: "https://github.com/ryotamatsuki/ehime-kokubunsai-ai-poc"
   },
   {
