@@ -8,6 +8,9 @@ window.RYOTA_PROJECTS = [
     host: "GitHub Pages",
     featured: 1,
     visual: "map",
+    image: "assets/projects/ehime-evacuation-risk-map.webp",
+    imagePosition: "50% 32%",
+    imageAttribution: "© OpenStreetMap contributors",
     appUrl: "https://ryotamatsuki.github.io/ehime-evacuation-risk-map/",
     repoUrl: "https://github.com/ryotamatsuki/ehime-evacuation-risk-map"
   },
@@ -20,6 +23,9 @@ window.RYOTA_PROJECTS = [
     host: "GitHub Pages",
     featured: 2,
     visual: "transit",
+    image: "assets/projects/ehime-mobility-resilience-lab.webp",
+    imagePosition: "50% 34%",
+    imageAttribution: "© OpenStreetMap contributors",
     appUrl: "https://ryotamatsuki.github.io/ehime-mobility-resilience-lab/",
     repoUrl: "https://github.com/ryotamatsuki/ehime-mobility-resilience-lab"
   },
@@ -30,7 +36,7 @@ window.RYOTA_PROJECTS = [
     categories: ["AI", "行政・防災"],
     status: "poc",
     host: "Streamlit",
-    featured: 3,
+    featured: false,
     visual: "chat",
     appUrl: null,
     repoUrl: "https://github.com/ryotamatsuki/ehime-kokubunsai-ai-poc"
@@ -44,6 +50,9 @@ window.RYOTA_PROJECTS = [
     host: "GitHub Pages",
     featured: false,
     visual: "aed",
+    image: "assets/projects/ehime-aed-rescue-map.webp",
+    imagePosition: "50% 40%",
+    imageAttribution: "© OpenStreetMap contributors",
     appUrl: "https://ryotamatsuki.github.io/ehime-aed-rescue-map/",
     repoUrl: "https://github.com/ryotamatsuki/ehime-aed-rescue-map"
   },
@@ -56,6 +65,8 @@ window.RYOTA_PROJECTS = [
     host: "Web App",
     featured: false,
     visual: "yokai",
+    image: "assets/projects/yokaizukan.webp",
+    imagePosition: "66% 34%",
     appUrl: "https://ryotamatsuki.github.io/yokaizukan/",
     repoUrl: "https://github.com/ryotamatsuki/yokaizukan"
   },
@@ -78,8 +89,10 @@ window.RYOTA_PROJECTS = [
     categories: ["行政・防災", "GIS"],
     status: "live",
     host: "Web App",
-    featured: false,
+    featured: 3,
     visual: "chart",
+    image: "assets/projects/furusatonozei.webp",
+    imagePosition: "56% 48%",
     appUrl: "https://ryotamatsuki.github.io/furusatonozei/",
     repoUrl: "https://github.com/ryotamatsuki/furusatonozei"
   },
@@ -92,7 +105,9 @@ window.RYOTA_PROJECTS = [
     host: "GitHub Pages",
     featured: false,
     visual: "map",
-    appUrl: "https://ryotamatsuki.github.io/kumamotoshienmap/",
+    image: "assets/projects/kumamotoshienmap.webp",
+    imagePosition: "50% 34%",
+    appUrl: "https://ryotamatsuki.github.io/kumamotoshienmap/ehime_kumamoto_support_geocoded_shelters_20260802.html",
     repoUrl: "https://github.com/ryotamatsuki/kumamotoshienmap"
   },
   {
@@ -104,6 +119,8 @@ window.RYOTA_PROJECTS = [
     host: "Web Game",
     featured: false,
     visual: "space",
+    image: "assets/projects/hime-star-journey.webp",
+    imagePosition: "50% 42%",
     appUrl: "https://ryotamatsuki.github.io/hime-star-journey/",
     repoUrl: "https://github.com/ryotamatsuki/hime-star-journey"
   },
@@ -116,6 +133,8 @@ window.RYOTA_PROJECTS = [
     host: "Streamlit",
     featured: false,
     visual: "chat",
+    image: "assets/projects/ehime-tour-planner.webp",
+    imagePosition: "55% 30%",
     appUrl: "https://ehime-tour-planner-iicqpkkbfs9zrcjba6a9at.streamlit.app/",
     repoUrl: "https://github.com/ryotamatsuki/ehime-tour-planner"
   },
@@ -152,6 +171,8 @@ window.RYOTA_PROJECTS = [
     host: "Web Game",
     featured: false,
     visual: "space",
+    image: "assets/projects/retro-sky-raid.webp",
+    imagePosition: "50% 48%",
     appUrl: "https://ryotamatsuki.github.io/retro-sky-raid/",
     repoUrl: "https://github.com/ryotamatsuki/retro-sky-raid"
   },
