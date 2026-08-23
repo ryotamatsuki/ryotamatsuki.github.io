@@ -19,7 +19,10 @@ try {
     if (!project) throw new Error(`Unknown project id: ${entry.id}`);
     if (!project.appUrl) throw new Error(`${entry.id} has no appUrl`);
 
-    const context = await browser.newContext({ viewport: config.viewport });
+    const context = await browser.newContext({
+      viewport: config.viewport,
+      deviceScaleFactor: config.deviceScaleFactor ?? 1
+    });
     const page = await context.newPage();
     try {
       await page.goto(project.appUrl, {
