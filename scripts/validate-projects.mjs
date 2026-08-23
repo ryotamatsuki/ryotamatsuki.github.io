@@ -12,6 +12,7 @@ const projects = sandbox.window.RYOTA_PROJECTS;
 const errors = [];
 const statuses = new Set(["live", "poc", "archive"]);
 const ids = new Set();
+const appHosts = new Set(["GitHub Pages", "Streamlit", "Web App", "Web Game"]);
 
 if (!Array.isArray(projects) || projects.length === 0) errors.push("projects.js must export a non-empty array");
 
@@ -24,6 +25,10 @@ for (const project of projects || []) {
   if (!statuses.has(project.status)) errors.push(`${project.id}: invalid status ${project.status}`);
   if (!project.repoUrl || !/^https:\/\/github\.com\//.test(project.repoUrl)) errors.push(`${project.id}: repoUrl must be a GitHub HTTPS URL`);
   if (project.appUrl && !/^https:\/\//.test(project.appUrl)) errors.push(`${project.id}: appUrl must be HTTPS`);
+  if (appHosts.has(project.host) && !project.appUrl) errors.push(`${project.id}: ${project.host} projects require appUrl and must not fall back to repoUrl`);
+  if (project.host === "Streamlit" && project.appUrl && !/^https:\/\/[a-z0-9-]+\.streamlit\.app\/?(?:[?#].*)?$/i.test(project.appUrl)) {
+    errors.push(`${project.id}: Streamlit appUrl must use a streamlit.app URL`);
+  }
   if (project.image) {
     const imagePath = path.join(repoRoot, project.image);
     try {
