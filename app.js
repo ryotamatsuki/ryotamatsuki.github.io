@@ -111,10 +111,9 @@
   }
 
   function updateStats() {
-    const publicProjects = projects.filter(p => p.status !== "archive");
-    document.getElementById("project-count").textContent = publicProjects.length;
-    document.getElementById("live-count").textContent = publicProjects.filter(p => p.status === "live").length;
-    document.getElementById("game-count").textContent = publicProjects.filter(p => p.categories.includes("ゲーム")).length;
+    document.getElementById("project-count").textContent = projects.length;
+    document.getElementById("live-count").textContent = projects.filter(p => p.status === "live").length;
+    document.getElementById("game-count").textContent = projects.filter(p => p.categories.includes("ゲーム")).length;
   }
 
   filterButtons.forEach(button => {

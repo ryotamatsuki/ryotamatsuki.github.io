@@ -12,6 +12,8 @@ const projects = sandbox.window.RYOTA_PROJECTS;
 const errors = [];
 const statuses = new Set(["live", "poc", "archive"]);
 const ids = new Set();
+const repoUrls = new Set();
+const appUrls = new Set();
 const appHosts = new Set(["GitHub Pages", "Streamlit", "Web App", "Web Game"]);
 
 if (!Array.isArray(projects) || projects.length === 0) errors.push("projects.js must export a non-empty array");
@@ -24,7 +26,11 @@ for (const project of projects || []) {
   if (!Array.isArray(project.categories) || project.categories.length === 0) errors.push(`${project.id}: categories are required`);
   if (!statuses.has(project.status)) errors.push(`${project.id}: invalid status ${project.status}`);
   if (!project.repoUrl || !/^https:\/\/github\.com\//.test(project.repoUrl)) errors.push(`${project.id}: repoUrl must be a GitHub HTTPS URL`);
+  if (project.repoUrl && repoUrls.has(project.repoUrl)) errors.push(`${project.id}: duplicate repoUrl ${project.repoUrl}`);
+  if (project.repoUrl) repoUrls.add(project.repoUrl);
   if (project.appUrl && !/^https:\/\//.test(project.appUrl)) errors.push(`${project.id}: appUrl must be HTTPS`);
+  if (project.appUrl && appUrls.has(project.appUrl)) errors.push(`${project.id}: duplicate appUrl ${project.appUrl}`);
+  if (project.appUrl) appUrls.add(project.appUrl);
   if (appHosts.has(project.host) && !project.appUrl) errors.push(`${project.id}: ${project.host} projects require appUrl and must not fall back to repoUrl`);
   if (project.host === "Streamlit" && project.appUrl && !/^https:\/\/[a-z0-9-]+\.streamlit\.app\/?(?:[?#].*)?$/i.test(project.appUrl)) {
     errors.push(`${project.id}: Streamlit appUrl must use a streamlit.app URL`);
