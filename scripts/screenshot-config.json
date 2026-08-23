@@ -1,0 +1,79 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "waitUntil": "domcontentloaded",
+  "delayMs": 5000,
+  "capture": [
+    {
+      "id": "ehime-evacuation-risk-map",
+      "output": "artifacts/screenshots/ehime-evacuation-risk-map.png",
+      "selector": "body",
+      "focalPoint": "50% 32%"
+    },
+    {
+      "id": "ehime-mobility-resilience-lab",
+      "output": "artifacts/screenshots/ehime-mobility-resilience-lab.png",
+      "selector": "body",
+      "focalPoint": "50% 34%"
+    },
+    {
+      "id": "ehime-aed-rescue-map",
+      "output": "artifacts/screenshots/ehime-aed-rescue-map.png",
+      "selector": "body",
+      "focalPoint": "50% 40%"
+    },
+    {
+      "id": "yokaizukan",
+      "output": "artifacts/screenshots/yokaizukan.png",
+      "selector": "body",
+      "focalPoint": "66% 34%"
+    },
+    {
+      "id": "furusatonozei",
+      "output": "artifacts/screenshots/furusatonozei.png",
+      "selector": "body",
+      "focalPoint": "56% 48%",
+      "actions": [
+        { "type": "clickText", "text": "金額分布" }
+      ],
+      "delayMs": 1800
+    },
+    {
+      "id": "kumamotoshienmap",
+      "output": "artifacts/screenshots/kumamotoshienmap.png",
+      "selector": "body",
+      "focalPoint": "50% 34%"
+    },
+    {
+      "id": "hime-star-journey",
+      "output": "artifacts/screenshots/hime-star-journey.png",
+      "selector": "body",
+      "focalPoint": "50% 42%",
+      "actions": [
+        { "type": "clickText", "text": "はじめから" }
+      ],
+      "delayMs": 1000
+    },
+    {
+      "id": "ehime-tour-planner",
+      "output": "artifacts/screenshots/ehime-tour-planner.png",
+      "selector": "body",
+      "focalPoint": "55% 30%",
+      "delayMs": 18000
+    },
+    {
+      "id": "retro-sky-raid",
+      "output": "artifacts/screenshots/retro-sky-raid.png",
+      "selector": "body",
+      "focalPoint": "50% 48%",
+      "actions": [
+        { "type": "press", "key": "Space" },
+        { "type": "press", "key": "Enter" }
+      ],
+      "delayMs": 1000
+    }
+  ]
+}
