@@ -24,13 +24,15 @@ Required fields:
 - `visual`
 - `repoUrl`
 
-Optional:
+Optional / conditional:
 
-- `appUrl`
+- `appUrl`: required when `host` is `GitHub Pages`, `Streamlit`, `Web App`, or `Web Game`; only repository-only `GitHub` entries may omit it
 - `featured`: `1`–`3` for the selected-work Bento area
 - `image`: local WebP screenshot path under `assets/projects/`
 - `imagePosition`: focal point such as `50% 40%`
 - `imageAttribution`: visible attribution for map screenshots when required
+
+Streamlit entries must use their public `*.streamlit.app` URL. This prevents the card's Open action from silently falling back to the GitHub repository when an app deployment exists.
 
 When adding an image, first confirm that the screen contains no unlicensed third-party character, mascot, logo, personal information, API key, or private URL. Read `BRAND_ASSET_POLICY.md` and update `docs/SCREENSHOT_INVENTORY.md` when the source or rights decision changes.
 
@@ -49,4 +51,4 @@ npm install
 npm run qa
 ```
 
-`npm run qa` validates project IDs, status values, repository links, featured count, local WebP assets, HTML IDs, and local asset references. If Playwright and its browser are installed, `npm run capture:screenshots` uses `scripts/screenshot-config.json` to reproduce the approved capture states; optimize reviewed PNGs to WebP before promoting them to `assets/projects/`.
+`npm run qa` validates project IDs, status values, repository links, app-link contracts, featured count, local WebP assets, HTML IDs, and local asset references. If Playwright and its browser are installed, `npm run capture:screenshots` uses `scripts/screenshot-config.json` to reproduce the approved capture states; optimize reviewed PNGs to WebP before promoting them to `assets/projects/`.
