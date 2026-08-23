@@ -1,9 +1,9 @@
 {
   "viewport": {
     "width": 1440,
-    "height": 900,
-    "deviceScaleFactor": 1
+    "height": 900
   },
+  "deviceScaleFactor": 1,
   "waitUntil": "domcontentloaded",
   "delayMs": 5000,
   "capture": [
