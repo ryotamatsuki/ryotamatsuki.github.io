@@ -31,7 +31,7 @@ window.RYOTA_PROJECTS = [
     status: "poc",
     host: "Streamlit",
     featured: 3,
-    visual: "ai",
+    visual: "chat",
     appUrl: null,
     repoUrl: "https://github.com/ryotamatsuki/ehime-kokubunsai-ai-poc"
   },
