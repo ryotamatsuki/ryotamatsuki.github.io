@@ -20,9 +20,31 @@
 
   const visualClass = (visual) => `visual-${visual || "map"}`;
   const statusLabel = (status) => status === "live" ? "LIVE" : status === "poc" ? "PoC" : "ARCHIVE";
+  const imagePosition = (project) => {
+    const value = String(project.imagePosition || "center").trim();
+    return /^\d{1,3}%\s+\d{1,3}%$/.test(value) ? value : "center";
+  };
+
+  const imageMarkup = (project, loading = "lazy") => project.image
+    ? `<img class="project-image" src="${escapeHTML(project.image)}" alt="" loading="${loading}" style="--image-position: ${escapeHTML(imagePosition(project))}">`
+    : "";
+
+  const attributionMarkup = (project) => project.imageAttribution
+    ? `<span class="image-attribution">${escapeHTML(project.imageAttribution)}</span>`
+    : "";
+
+  const visualMarkup = (project, type, loading = "lazy") => project.image
+    ? `<div class="${type}-visual has-image">${imageMarkup(project, loading)}</div>`
+    : `<div class="${type}-visual ${visualClass(project.visual)}"></div>`;
 
   function mainUrl(project) {
     return project.appUrl || project.repoUrl || "#";
+  }
+
+  function mainLinkLabel(project) {
+    return project.appUrl
+      ? `${project.title}の公開ページを開く`
+      : `${project.title}のGitHubリポジトリを開く`;
   }
 
   function renderFeatured() {
@@ -33,7 +55,8 @@
 
     featuredGrid.innerHTML = featured.map(project => `
       <a class="featured-card" href="${escapeHTML(mainUrl(project))}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}を開く">
-        <div class="featured-visual ${visualClass(project.visual)}"></div>
+        ${visualMarkup(project, "featured", "eager")}
+        ${attributionMarkup(project)}
         <div class="featured-content">
           <div class="badge-row">
             <span class="badge category">${escapeHTML(project.categories[0] || "Project")}</span>
@@ -52,7 +75,8 @@
     return `
       <article class="project-card" data-project-id="${escapeHTML(project.id)}">
         <a class="project-thumb" href="${escapeHTML(openUrl)}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}を開く">
-          <div class="thumb-art ${visualClass(project.visual)}"></div>
+          ${visualMarkup(project, "thumb")}
+          ${attributionMarkup(project)}
           <span class="badge status ${project.status === "live" ? "live" : "poc"}">${statusLabel(project.status)}</span>
           <span class="badge host">${escapeHTML(project.host || "GitHub")}</span>
         </a>
@@ -60,7 +84,7 @@
           <h3>${escapeHTML(project.title)}</h3>
           <p>${escapeHTML(project.description)}</p>
           <div class="card-actions">
-            <a href="${escapeHTML(openUrl)}" target="_blank" rel="noopener">Open <span aria-hidden="true">→</span></a>
+            <a href="${escapeHTML(openUrl)}" target="_blank" rel="noopener" aria-label="${escapeHTML(mainLinkLabel(project))}">Open <span aria-hidden="true">→</span></a>
             <a class="github-link" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}のGitHubリポジトリ">◉ GitHub</a>
           </div>
         </div>
