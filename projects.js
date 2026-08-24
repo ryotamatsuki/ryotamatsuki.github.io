@@ -225,9 +225,9 @@ window.RYOTA_PROJECTS = [
   {
     id: "retro-sky-raid",
     title: "Retro Sky Raid",
-    description: "レトロな空戦表現を試したブラウザゲームプロトタイプ。",
+    description: "レトロな空戦表現を楽しめるブラウザ向けシューティングゲーム。",
     categories: ["ゲーム"],
-    status: "archive",
+    status: "live",
     host: "Web Game",
     featured: false,
     visual: "space",
@@ -510,6 +510,6 @@ window.RYOTA_PROJECTS = [
     featured: false,
     visual: "chart",
     appUrl: null,
-    repoUrl: "https://github.com/ryotamatsuki/writepaper_public_co-creation_hubs"
+    repoUrl: "https://github.com/ryotamatsuki/writepaper_public_co-creation-hubs"
   }
 ];
