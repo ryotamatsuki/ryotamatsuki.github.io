@@ -23,11 +23,11 @@ jobs:
         run: |
           node --check app.js
           node --check projects.js
+          node --check project-details.js
           node --check scripts/capture-screenshots.mjs
           node --check scripts/validate-projects.mjs
+          node --check scripts/validate-details.mjs
           node --check scripts/validate-static.mjs
           node --check scripts/validate-links.mjs
-      - name: Validate project data and static assets
-        run: |
-          node scripts/validate-projects.mjs
-          node scripts/validate-static.mjs
+      - name: Run portfolio QA contract
+        run: npm run qa
