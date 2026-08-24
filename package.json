@@ -4,9 +4,10 @@
   "type": "module",
   "scripts": {
     "validate:projects": "node scripts/validate-projects.mjs",
+    "validate:details": "node scripts/validate-details.mjs",
     "validate:static": "node scripts/validate-static.mjs",
     "validate:links": "node scripts/validate-links.mjs",
-    "qa": "npm run validate:projects && npm run validate:static",
+    "qa": "npm run validate:projects && npm run validate:details && npm run validate:static",
     "capture:screenshots": "node scripts/capture-screenshots.mjs"
   },
   "devDependencies": {

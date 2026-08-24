@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="details.css">
 </head>
 <body>
   <div class="page-shell">
@@ -63,7 +64,7 @@
             <p class="section-kicker">SELECTED WORK</p>
             <h2 id="featured-title">注目プロジェクト</h2>
           </div>
-          <p>いま触ってほしいプロダクトをピックアップ。</p>
+          <p>概要と使い方を確認してから、実際のアプリを試せます。</p>
         </div>
         <div id="featured-grid" class="featured-grid"></div>
       </section>
@@ -89,6 +90,8 @@
             <input id="project-search" type="search" placeholder="Search projects…" autocomplete="off">
           </label>
         </div>
+
+        <p class="project-guide"><strong>概要を見る</strong><span>を押すと、課題・目的・できること・使い方・データ・技術を確認できます。外部アプリへ移動する前に操作方法を把握できます。</span></p>
 
         <div id="project-grid" class="project-grid" aria-live="polite"></div>
         <p id="empty-state" class="empty-state" hidden>条件に一致するプロジェクトがありません。</p>
@@ -132,7 +135,15 @@
     </footer>
   </div>
 
+  <dialog id="project-dialog" class="project-dialog" aria-labelledby="project-dialog-title">
+    <div class="project-dialog-panel">
+      <button id="project-dialog-close" class="project-dialog-close" type="button" aria-label="プロジェクト詳細を閉じる">×</button>
+      <div id="project-dialog-content"></div>
+    </div>
+  </dialog>
+
   <script src="projects.js"></script>
+  <script src="project-details.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
