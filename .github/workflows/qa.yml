@@ -24,6 +24,7 @@ jobs:
           node --check app.js
           node --check projects.js
           node --check project-details.js
+          node --check project-detail-overrides.js
           node --check scripts/capture-screenshots.mjs
           node --check scripts/validate-projects.mjs
           node --check scripts/validate-details.mjs

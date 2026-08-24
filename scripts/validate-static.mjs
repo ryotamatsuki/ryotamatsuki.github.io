@@ -18,7 +18,7 @@ if (!/<html[^>]+lang="ja"/i.test(html)) errors.push("index.html must declare lan
 if (!/<meta[^>]+name="viewport"/i.test(html)) errors.push("viewport meta is missing");
 if (!/<link[^>]+href="styles\.css"/i.test(html)) errors.push("styles.css is not linked");
 if (!/<link[^>]+href="details\.css"/i.test(html)) errors.push("details.css is not linked");
-if (!/<script[^>]+src="projects\.js"/.test(html) || !/<script[^>]+src="project-details\.js"/.test(html) || !/<script[^>]+src="app\.js"/.test(html)) {
+if (!/<script[^>]+src="projects\.js"/.test(html) || !/<script[^>]+src="project-details\.js"/.test(html) || !/<script[^>]+src="project-detail-overrides\.js"/.test(html) || !/<script[^>]+src="app\.js"/.test(html)) {
   errors.push("project/detail scripts are not linked");
 }
 if (!/<dialog[^>]+id="project-dialog"/i.test(html)) errors.push("project detail dialog is missing");
