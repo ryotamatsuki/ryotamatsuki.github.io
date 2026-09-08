@@ -1,0 +1,104 @@
+name: Publish racegame
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-racegame.yml'
+      - 'racegame-sync.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-racegame
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Pages repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Checkout racegame source
+        uses: actions/checkout@v6
+        with:
+          repository: ryotamatsuki/racegame
+          ref: main
+          path: .racegame-source
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Install and verify racegame
+        working-directory: .racegame-source
+        run: |
+          npx --yes npm@11 ci --no-audit --no-fund
+          npm run typecheck
+          npm test
+          npm run build
+
+      - name: Stage racegame site
+        run: |
+          rm -rf racegame
+          mkdir -p racegame
+          cp -a .racegame-source/dist/. racegame/
+          test -f racegame/index.html
+          grep -q 'MICRO RACER WORKSHOP' racegame/index.html
+
+      - name: Commit published build
+        id: publish
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A racegame
+          if git diff --cached --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            git commit -m 'deploy: publish racegame'
+            git push origin HEAD:main
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Wait for GitHub Pages propagation
+        run: |
+          url='https://ryotamatsuki.github.io/racegame/'
+          for i in $(seq 1 90); do
+            body="$(curl -fsSL --max-time 20 "${url}?v=${GITHUB_RUN_ID}-${i}" 2>/dev/null || true)"
+            if printf '%s' "$body" | grep -q 'MICRO RACER WORKSHOP'; then
+              echo 'Published page is live.'
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'Timed out waiting for published racegame.' >&2
+          exit 1
+
+      - name: Install Chromium for public E2E
+        working-directory: .racegame-source
+        run: npx playwright install --with-deps chromium
+
+      - name: Public Pages E2E
+        working-directory: .racegame-source
+        env:
+          PLAYWRIGHT_BASE_URL: https://ryotamatsuki.github.io/racegame/
+        run: npm run test:e2e
+
+      - name: Upload public E2E evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: racegame-public-e2e-${{ github.run_id }}
+          path: |
+            .racegame-source/test-results/
+            .racegame-source/playwright-report/
+          if-no-files-found: warn
+          retention-days: 14
