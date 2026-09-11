@@ -5,9 +5,13 @@ import { fileURLToPath } from "node:url";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..");
-const source = await fs.readFile(path.join(repoRoot, "projects.js"), "utf8");
+const [source, overrideSource] = await Promise.all([
+  fs.readFile(path.join(repoRoot, "projects.js"), "utf8"),
+  fs.readFile(path.join(repoRoot, "project-detail-overrides.js"), "utf8")
+]);
 const sandbox = { window: {} };
 vm.runInNewContext(source, sandbox);
+vm.runInNewContext(overrideSource, sandbox);
 const projects = sandbox.window.RYOTA_PROJECTS;
 const errors = [];
 const statuses = new Set(["live", "poc", "archive"]);
@@ -16,7 +20,7 @@ const repoUrls = new Set();
 const appUrls = new Set();
 const appHosts = new Set(["GitHub Pages", "Streamlit", "Web App", "Web Game"]);
 
-if (!Array.isArray(projects) || projects.length === 0) errors.push("projects.js must export a non-empty array");
+if (!Array.isArray(projects) || projects.length === 0) errors.push("projects.js + runtime overrides must export a non-empty array");
 
 for (const project of projects || []) {
   if (!project.id) errors.push("project id is required");
@@ -60,4 +64,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`projects: ${projects.length} valid; featured: ${featured.length}; images: ${(projects || []).filter(project => project.image).length}`);
+console.log(`projects: ${projects.length} valid after runtime overrides; featured: ${featured.length}; images: ${(projects || []).filter(project => project.image).length}`);
