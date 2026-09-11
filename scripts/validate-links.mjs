@@ -1,9 +1,13 @@
 import fs from "node:fs/promises";
 import vm from "node:vm";
 
-const source = await fs.readFile(new URL("../projects.js", import.meta.url), "utf8");
+const [source, overrideSource] = await Promise.all([
+  fs.readFile(new URL("../projects.js", import.meta.url), "utf8"),
+  fs.readFile(new URL("../project-detail-overrides.js", import.meta.url), "utf8")
+]);
 const sandbox = { window: {} };
 vm.runInNewContext(source, sandbox);
+vm.runInNewContext(overrideSource, sandbox);
 const projects = sandbox.window.RYOTA_PROJECTS || [];
 const hostById = new Map(projects.map(project => [project.id, project.host]));
 const results = [];

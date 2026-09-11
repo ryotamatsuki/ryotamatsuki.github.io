@@ -5,14 +5,16 @@ import { fileURLToPath } from "node:url";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..");
-const [projectsSource, detailsSource] = await Promise.all([
+const [projectsSource, detailsSource, overrideSource] = await Promise.all([
   fs.readFile(path.join(repoRoot, "projects.js"), "utf8"),
-  fs.readFile(path.join(repoRoot, "project-details.js"), "utf8")
+  fs.readFile(path.join(repoRoot, "project-details.js"), "utf8"),
+  fs.readFile(path.join(repoRoot, "project-detail-overrides.js"), "utf8")
 ]);
 
 const sandbox = { window: {} };
 vm.runInNewContext(projectsSource, sandbox);
 vm.runInNewContext(detailsSource, sandbox);
+vm.runInNewContext(overrideSource, sandbox);
 
 const projects = Array.isArray(sandbox.window.RYOTA_PROJECTS) ? sandbox.window.RYOTA_PROJECTS : [];
 const details = sandbox.window.RYOTA_PROJECT_DETAILS && typeof sandbox.window.RYOTA_PROJECT_DETAILS === "object"
@@ -68,7 +70,7 @@ for (const detailId of detailIds) {
 
 for (const excludedId of excludedIds) {
   if (!projects.some(project => project.id === excludedId)) {
-    errors.push(`${excludedId}: excluded project id does not exist in projects.js`);
+    errors.push(`${excludedId}: excluded project id does not exist after runtime overrides`);
   }
 }
 
@@ -81,4 +83,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`project details: ${detailIds.size}/${displayedProjects.length} complete; excluded: ${excludedIds.size}`);
+console.log(`project details: ${detailIds.size}/${displayedProjects.length} complete after runtime overrides; excluded: ${excludedIds.size}`);
