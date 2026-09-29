@@ -377,6 +377,53 @@
     notes: "コード・図形キャラクター・背景・敵・エフェクト・合成効果音は本プロジェクト用のオリジナルです。実機iPhone / Androidの最終確認は別途必要です。"
   });
 
+
+  addProject({
+    id: "carwash-motion-lab",
+    title: "3D自動洗車場 — Car Wash Motion Lab",
+    description: "洗車機・ブラシ・送風工程が自動進行する、ブラウザ上の3D洗車場シミュレーション。",
+    categories: ["ゲーム"],
+    status: "live",
+    host: "ChatGPT Site",
+    featured: false,
+    visual: "game",
+    appUrl: "https://carwash-motion-lab.budoto.chatgpt.site/",
+    repoUrl: null
+  });
+
+  addProject({
+    id: "pirate-voyage",
+    title: "Pirate Voyage — 海賊船航海シミュレーション",
+    description: "広大な海を海賊船で航海し、波や船の動きを楽しむブラウザシミュレーション。",
+    categories: ["ゲーム"],
+    status: "live",
+    host: "ChatGPT Site",
+    featured: false,
+    visual: "game",
+    appUrl: "https://pirate-voyage.budoto.chatgpt.site/",
+    repoUrl: null
+  });
+
+  setDetail("carwash-motion-lab", {
+    problem: "自動洗車機の工程や機械の動きを、静止画ではなく一連の動作として直感的に見られる3Dデモを作る実験です。",
+    purpose: "ブラウザ上で車両と洗車設備を動かし、洗浄から送風までの流れを短時間で体験できるインタラクティブな3Dシミュレーションとして公開します。",
+    features: ["洗車工程の自動進行", "ブラシや設備のアニメーション", "ブラウザだけで動く3D表現"],
+    howToUse: ["アプリを開きます。", "画面内の洗車工程を開始し、自動で進む各ステップを確認します。", "視点や操作UIがある場合は切り替えながら設備の動きを観察します。"],
+    dataSources: ["アプリ内で定義した車両・設備・動作パラメータ"],
+    tech: ["HTML", "CSS", "JavaScript", "Browser 3D"],
+    notes: "ChatGPT Siteで公開している単体Web作品です。GitHubリポジトリは現在この作品カードには紐付けていません。"
+  });
+
+  setDetail("pirate-voyage", {
+    problem: "広い海を航行する感覚を、インストール不要の1ページWebアプリでどこまで表現できるかを試すための作品です。",
+    purpose: "海・波・船の動きを組み合わせ、海賊船で航海している感覚をブラウザ上で楽しめるインタラクティブシミュレーションとして公開します。",
+    features: ["広い海を進む海賊船の航海表現", "波や船体の動きによる海上感の演出", "ブラウザだけで遊べる軽量なインタラクティブ体験"],
+    howToUse: ["アプリを開きます。", "画面の操作案内に従って海賊船を航行させます。", "海上の景観や船の動きを見ながら自由に航海します。"],
+    dataSources: ["アプリ内で生成・定義した海面・船・航行パラメータ"],
+    tech: ["HTML", "CSS", "JavaScript", "Browser Simulation"],
+    notes: "ChatGPT Siteで公開している単体Web作品です。GitHubリポジトリは現在この作品カードには紐付けていません。"
+  });
+
   setDetail("sarashina-chat", {
     howToUse: ["Streamlit公開アプリを開きます。", "チャット欄へ日本語を入力し、Modal上のSarashina推論バックエンドから返る回答を確認します。", "必要に応じてサイドバーから会話履歴をリセットします。"],
     notes: "試験用チャットです。公開Streamlitから直接試せますが、個人情報・機密情報・未公開情報を入力しないでください。"
