@@ -82,23 +82,27 @@
   };
 
   function detailActionMarkup(project) {
-    if (project.appUrl) {
-      return `
+    const appLink = project.appUrl
+      ? `
         <a class="detail-cta detail-cta-primary" href="${escapeHTML(project.appUrl)}" target="_blank" rel="noopener">
           アプリを試す <span aria-hidden="true">↗</span>
         </a>
-        <a class="detail-cta detail-cta-secondary" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener">
+      `
+      : "";
+
+    const repoLink = project.repoUrl
+      ? `
+        <a class="detail-cta ${project.appUrl ? "detail-cta-secondary" : "detail-cta-primary"}" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener">
           GitHubを見る <span aria-hidden="true">↗</span>
         </a>
-      `;
+      `
+      : "";
+
+    if (appLink || repoLink) {
+      return `${appLink}${repoLink}`;
     }
 
-    return `
-      <a class="detail-cta detail-cta-primary" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener">
-        GitHubで見る <span aria-hidden="true">↗</span>
-      </a>
-      <span class="detail-no-app">公開アプリURLは未設定です。使い方は上の手順を確認してください。</span>
-    `;
+    return `<span class="detail-no-app">公開リンクは未設定です。</span>`;
   }
 
   function detailTemplate(project) {
@@ -271,7 +275,7 @@
             >
               概要を見る <span aria-hidden="true">→</span>
             </button>
-            <a class="github-link" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}のGitHubリポジトリ">◉ GitHub</a>
+            ${project.repoUrl ? `<a class="github-link" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}のGitHubリポジトリ">◉ GitHub</a>` : ""}
           </div>
         </div>
       </article>
