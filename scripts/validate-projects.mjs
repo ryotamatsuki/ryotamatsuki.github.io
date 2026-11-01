@@ -18,7 +18,7 @@ const statuses = new Set(["live", "poc", "archive"]);
 const ids = new Set();
 const repoUrls = new Set();
 const appUrls = new Set();
-const appHosts = new Set(["GitHub Pages", "Streamlit", "Web App", "Web Game"]);
+const appHosts = new Set(["GitHub Pages", "Streamlit", "Web App", "Web Game", "ChatGPT Site"]);
 
 if (!Array.isArray(projects) || projects.length === 0) errors.push("projects.js + runtime overrides must export a non-empty array");
 
@@ -29,7 +29,20 @@ for (const project of projects || []) {
   if (!project.title || !project.description) errors.push(`${project.id}: title and description are required`);
   if (!Array.isArray(project.categories) || project.categories.length === 0) errors.push(`${project.id}: categories are required`);
   if (!statuses.has(project.status)) errors.push(`${project.id}: invalid status ${project.status}`);
-  if (!project.repoUrl || !/^https:\/\/github\.com\//.test(project.repoUrl)) errors.push(`${project.id}: repoUrl must be a GitHub HTTPS URL`);
+  // Standalone ChatGPT Site demos do not have a GitHub repository.
+  // Keep the stricter GitHub-only requirement for other project types.
+  if (!project.repoUrl) {
+    if (project.host !== "ChatGPT Site") errors.push(`${project.id}: repoUrl must be a GitHub HTTPS URL`);
+  } else {
+    try {
+      const url = new URL(project.repoUrl);
+      if (url.protocol !== "https:" || url.hostname !== "github.com" || url.username || url.password) {
+        errors.push(`${project.id}: repoUrl must be a GitHub HTTPS URL`);
+      }
+    } catch {
+      errors.push(`${project.id}: repoUrl must be a valid URL`);
+    }
+  }
   if (project.repoUrl && repoUrls.has(project.repoUrl)) errors.push(`${project.id}: duplicate repoUrl ${project.repoUrl}`);
   if (project.repoUrl) repoUrls.add(project.repoUrl);
   if (project.appUrl && !/^https:\/\//.test(project.appUrl)) errors.push(`${project.id}: appUrl must be HTTPS`);
