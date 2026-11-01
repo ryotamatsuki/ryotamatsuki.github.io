@@ -1,0 +1,29 @@
+name: Shared-origin live JavaScript inventory
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 0 * * *"
+  pull_request:
+    paths:
+      - scripts/audit-shared-origin-live.mjs
+      - .github/workflows/shared-origin-inventory.yml
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Inspect live pages and script URLs
+        run: node scripts/audit-shared-origin-live.mjs
+      - name: Upload report even when findings fail the gate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-origin-live-inventory
+          path: security-reports/shared-origin-live-inventory.json
+          if-no-files-found: warn
