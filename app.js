@@ -30,7 +30,21 @@
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 
-  const visualClass = (visual) => `visual-${visual || "map"}`;
+  // Attribute encoding alone does not restrict javascript: or data: URLs.
+  const safeURL = (value) => {
+    if (!value) return "";
+    try {
+      const url = new URL(String(value), window.location.href);
+      return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
+    } catch {
+      return "";
+    }
+  };
+
+  const visualClass = (visual) => {
+    const kind = String(visual || "map");
+    return `visual-${/^[a-z0-9-]+$/i.test(kind) ? kind : "map"}`;
+  };
   const statusLabel = (status) => status === "live" ? "LIVE" : status === "poc" ? "PoC" : "ARCHIVE";
   const statusClass = (status) => status === "live" ? "live" : status === "poc" ? "poc" : "archive";
   const imagePosition = (project) => {
@@ -38,15 +52,15 @@
     return /^\d{1,3}%\s+\d{1,3}%$/.test(value) ? value : "center";
   };
 
-  const imageMarkup = (project, loading = "lazy") => project.image
-    ? `<img class="project-image" src="${escapeHTML(project.image)}" alt="" loading="${loading}" style="--image-position: ${escapeHTML(imagePosition(project))}">`
+  const imageMarkup = (project, loading = "lazy") => safeURL(project.image)
+    ? `<img class="project-image" src="${escapeHTML(safeURL(project.image))}" alt="" loading="${loading}" style="--image-position: ${escapeHTML(imagePosition(project))}">`
     : "";
 
   const attributionMarkup = (project) => project.imageAttribution
     ? `<span class="image-attribution">${escapeHTML(project.imageAttribution)}</span>`
     : "";
 
-  const visualMarkup = (project, type, loading = "lazy") => project.image
+  const visualMarkup = (project, type, loading = "lazy") => safeURL(project.image)
     ? `<div class="${type}-visual has-image">${imageMarkup(project, loading)}</div>`
     : `<div class="${type}-visual ${visualClass(project.visual)}"></div>`;
 
@@ -82,17 +96,19 @@
   };
 
   function detailActionMarkup(project) {
-    const appLink = project.appUrl
+    const appUrl = safeURL(project.appUrl);
+    const repoUrl = safeURL(project.repoUrl);
+    const appLink = appUrl
       ? `
-        <a class="detail-cta detail-cta-primary" href="${escapeHTML(project.appUrl)}" target="_blank" rel="noopener">
+        <a class="detail-cta detail-cta-primary" href="${escapeHTML(appUrl)}" target="_blank" rel="noopener">
           アプリを試す <span aria-hidden="true">↗</span>
         </a>
       `
       : "";
 
-    const repoLink = project.repoUrl
+    const repoLink = repoUrl
       ? `
-        <a class="detail-cta ${project.appUrl ? "detail-cta-secondary" : "detail-cta-primary"}" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener">
+        <a class="detail-cta ${appUrl ? "detail-cta-secondary" : "detail-cta-primary"}" href="${escapeHTML(repoUrl)}" target="_blank" rel="noopener">
           GitHubを見る <span aria-hidden="true">↗</span>
         </a>
       `
@@ -275,7 +291,7 @@
             >
               概要を見る <span aria-hidden="true">→</span>
             </button>
-            ${project.repoUrl ? `<a class="github-link" href="${escapeHTML(project.repoUrl)}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}のGitHubリポジトリ">◉ GitHub</a>` : ""}
+            ${safeURL(project.repoUrl) ? `<a class="github-link" href="${escapeHTML(safeURL(project.repoUrl))}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}のGitHubリポジトリ">◉ GitHub</a>` : ""}
           </div>
         </div>
       </article>
