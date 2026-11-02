@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>同一オリジン・ブラウザ環境の監査</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:780px;margin:2rem auto;padding:0 1rem;line-height:1.7;color:#17202f}
+  button{padding:.7rem 1.1rem;font:inherit;border:1px solid #355a78;border-radius:.5rem;background:#fff;cursor:pointer}
+  pre{background:#f3f6f8;border:1px solid #dae1e6;white-space:pre-wrap;overflow-wrap:anywhere;padding:1rem;border-radius:.5rem}
+  p{max-width:75ch}
+</style>
+</head>
+<body>
+<h1>同一オリジン・ブラウザ環境の監査</h1>
+<p>このページは、現在利用しているブラウザ・プロファイルのService Workerと保存領域の登録名を表示します。保存データの内容やGoogleのアクセストークンは読み取りません。外部送信もしません。</p>
+<p>登録が見つからない場合でも、別の端末やブラウザの状態、JavaScriptの安全性まで保証するものではありません。</p>
+<button id="inspect" type="button">このブラウザを確認する</button>
+<pre id="result" aria-live="polite">未実施</pre>
+<script>
+'use strict';
+const inspectButton = document.getElementById('inspect');
+const output = document.getElementById('result');
+inspectButton.addEventListener('click', async () => {
+  inspectButton.disabled = true;
+  output.textContent = '確認中';
+  try {
+    const sw = 'serviceWorker' in navigator ? await navigator.serviceWorker.getRegistrations() : [];
+    const cacheNames = 'caches' in window ? await caches.keys() : [];
+    const dbs = typeof indexedDB.databases === 'function' ? await indexedDB.databases() : [];
+    output.textContent = JSON.stringify({
+      checkedAt: new Date().toISOString(),
+      origin: location.origin,
+      serviceWorkerController: navigator.serviceWorker?.controller?.scriptURL ?? null,
+      serviceWorkers: sw.map(r => ({
+        scope: r.scope,
+        active: r.active?.scriptURL ?? null,
+        waiting: r.waiting?.scriptURL ?? null,
+        installing: r.installing?.scriptURL ?? null
+      })),
+      cacheNames,
+      indexedDBNames: dbs.map(x => x.name).filter(Boolean)
+    }, null, 2);
+  } catch (error) {
+    output.textContent = '確認できませんでした: ' + String(error?.message || error);
+  } finally {
+    inspectButton.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
