@@ -1,6 +1,37 @@
 #!/usr/bin/env node
 // Fail closed if the repository has unresolved HIGH/CRITICAL CodeQL findings.
 // A green result applies to the root portfolio repository only.
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+// A PR must be evaluated against its own SARIF rather than unrelated alerts
+// remaining on the current default branch.
+if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
+ const filename=path.resolve(process.cwd(), '../results/javascript.sarif');
+ const sarif=JSON.parse(await fs.readFile(filename, 'utf8'));
+ if (!Array.isArray(sarif.runs) || !sarif.runs.length) throw Error('CodeQL SARIF has no runs');
+ const findings=[];
+ let total=0;
+ for (const run of sarif.runs) {
+  const rules=run.tool?.driver?.rules || [];
+  for (const result of run.results || []) {
+   total++;
+   const rule=rules[result.ruleIndex] || rules.find(r=>r.id === result.ruleId);
+   if (!rule) throw Error('CodeQL rule metadata unavailable: '+result.ruleId);
+   const score=Number(rule.properties?.['security-severity'] ?? rule.properties?.securitySeverity ?? 0);
+   if (!Number.isFinite(score)) throw Error('Unparseable security severity '+result.ruleId);
+   if (score >= 7) {
+    const loc=result.locations?.[0]?.physicalLocation?.region;
+    const file=result.locations?.[0]?.physicalLocation?.artifactLocation?.uri;
+    findings.push({rule:result.ruleId,score,file,line:loc?.startLine});
+   }
+  }
+ }
+ console.log(JSON.stringify({mode:'pull_request_sarif',allFindings:total,highCritical:findings.length,findings},null,2));
+ if (findings.length) process.exit(1);
+ process.exit(0);
+}
+
 const token = process.env.GITHUB_TOKEN;
 const repository = process.env.GITHUB_REPOSITORY;
 if (!token || !repository) throw Error("GitHub token and repository name are required");
