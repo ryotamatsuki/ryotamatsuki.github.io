@@ -3,6 +3,7 @@
 // This is a security visibility tool, NOT a certification that any script is safe.
 import fs from "node:fs/promises";
 import crypto from "node:crypto";
+import { parse } from "parse5";
 
 const origin = "https://ryotamatsuki.github.io";
 const paths = [
@@ -45,17 +46,33 @@ for (const pathname of paths) {
   if (!/html/i.test(doc.type) && !/<html[\s>]/i.test(doc.body)) {
    errors.push({url,problem:"not HTML"});continue;
   }
-  const tags = [...doc.body.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
+  // WHATWG HTML parsing rather than a fragile script-tag matching regex.
+  const parsed = parse(doc.body, { sourceCodeLocationInfo: true });
+  const tags = [];
+  const visit = node => {
+    if (node.tagName === 'script') tags.push(node);
+    for (const child of node.childNodes || []) visit(child);
+    if (node.content) visit(node.content);
+  };
+  visit(parsed);
   const refs = [];
-  for(const m of tags) {
-   const src = /\bsrc\s*=\s*(['"])(.*?)\1/i.exec(m[1]);
+  for(const tag of tags) {
+   const attributes = new Map((tag.attrs || []).map(a => [a.name, a.value]));
+   const src = attributes.get('src');
    if(src) {
     try {
-     const target = new URL(src[2],url);
-     refs.push({src:target.href,crossOrigin:target.origin !== origin,integrity:/\bintegrity\s*=/i.test(m[1])});
+     const target = new URL(src,url);
+     refs.push({src:target.href,crossOrigin:target.origin !== origin,
+       integrity:typeof attributes.get('integrity') === 'string' && attributes.get('integrity').length>0});
      if(target.origin === origin) scripts.add(target.href);
     } catch(e){ errors.push({url,problem:"invalid script src"}); }
-   } else refs.push({inline:true,size:m[2].length,sha256:sha(m[2])});
+   } else {
+    const loc = tag.sourceCodeLocation;
+    const content = loc?.startTag && loc?.endTag
+      ? doc.body.slice(loc.startTag.endOffset, loc.endTag.startOffset)
+      : (tag.childNodes||[]).map(n=>n.value||'').join('');
+    refs.push({inline:true,size:content.length,sha256:sha(content)});
+   }
   }
   all.push({url,size:doc.size,sha256:doc.sha256,scriptRefs:refs,
    potentialSinks:(doc.body.match(/(?:innerHTML\s*(?:=|\+=)|outerHTML\s*=|insertAdjacentHTML\s*\(|setHTML\s*\(|document\.write\s*\(|\beval\s*\(|new Function\s*\()/g)||[]).length,
