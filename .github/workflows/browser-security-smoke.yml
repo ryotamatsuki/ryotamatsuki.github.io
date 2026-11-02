@@ -1,0 +1,32 @@
+name: Shared-origin real-browser smoke audit
+on:
+  pull_request:
+    paths:
+      - scripts/browser-smoke-shared-origin.mjs
+      - .github/workflows/browser-security-smoke.yml
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * 1"
+permissions:
+  contents: read
+jobs:
+  browser-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install browser in isolated CI runner
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Open public pages without authentication
+        run: node scripts/browser-smoke-shared-origin.mjs
+      - name: Save machine-readable report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-origin-browser-smoke
+          path: security-reports/shared-origin-browser-smoke.json
