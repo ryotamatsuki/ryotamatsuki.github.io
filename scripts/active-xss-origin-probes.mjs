@@ -43,6 +43,11 @@ await check('/qgisgaikokujin2/',(attack)=>{
 });
 await check('/codextest_a/',(attack)=>{
  window.__originXssProbe=0;
+ const script=await (await fetch('/codextest_a/main.js')).text();
+ const start=script.indexOf('const escapeHTML = ');
+ const end=script.indexOf('const apiKeyInput', start);
+ if(start<0||end<=start) throw Error('Expected security helpers not found in served module');
+ const {escapeHTML,safeVideoId}=new Function(script.slice(start,end)+'return {escapeHTML,safeVideoId};')();
  const host=document.createElement('div');
  host.innerHTML=escapeHTML(attack);
  document.body.appendChild(host);
