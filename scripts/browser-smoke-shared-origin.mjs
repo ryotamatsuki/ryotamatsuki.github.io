@@ -5,6 +5,9 @@ const sites=[
  '/yokaizukan/', '/codextest_a/', '/ehime_quiz/', '/test/', '/cancertest/',
  '/openstreet/', '/ryota.openstreet/', '/lpsample/', '/orange/',
  '/ehime-aed-rescue-map/', '/ehime-mobility-resilience-lab/',
+ '/kids_typing/', '/360panorama/', '/solar_system/', '/economic-theory-research-dashboard/',
+ '/ehime-civil-works-monitor/', '/furusatonozei/', '/plateau_matsuyama/',
+ '/house-/', '/ehime-evacuation-risk-map/', '/star-wing/',
  '/sakefolio/security-test-20261019/', '/security-origin-audit/'
 ];
 const origin='https://ryotamatsuki.github.io';
