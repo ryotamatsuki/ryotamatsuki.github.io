@@ -1,3 +1,4 @@
+# Re-evaluate after 2026-11-02 remediation merges for Sakefolio, Yokai and Kumamoto.
 # The former /yokaschlool/ page and GitHub repository now return 404;
 # record that unavailable route separately rather than silently reporting a green scan.
 name: Whole-origin repository CodeQL inventory
