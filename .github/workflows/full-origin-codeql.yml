@@ -1,3 +1,5 @@
+# The former /yokaschlool/ page and GitHub repository now return 404;
+# record that unavailable route separately rather than silently reporting a green scan.
 name: Whole-origin repository CodeQL inventory
 on:
   pull_request:
@@ -58,7 +60,6 @@ jobs:
           - { repo: "house-", ref: "main" }
           - { repo: "furusatonozei", ref: "main" }
           - { repo: "-astra-wetland-lake", ref: "main" }
-          - { repo: "yokaschlool", ref: "main" }
           - { repo: "matsuyamacastle-", ref: "main" }
           - { repo: "sakefolio", ref: "test/sakefolio-pages-preview" }
     steps:
