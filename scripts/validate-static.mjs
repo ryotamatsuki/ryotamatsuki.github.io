@@ -24,7 +24,7 @@ if (!/<script[^>]+src="projects\.js"/.test(html) || !/<script[^>]+src="project-d
 if (!/<dialog[^>]+id="project-dialog"/i.test(html)) errors.push("project detail dialog is missing");
 if (!/id="project-dialog-content"/.test(html)) errors.push("project detail dialog content target is missing");
 // Validate URL origin and pathname, not a host substring that an attacker can prefix.
-const hrefValues = [...html.matchAll(/\\bhref="([^"]+)"/g)].map(match => match[1]);
+const hrefValues = [...html.matchAll(/\bhref="([^"]+)"/g)].map(match => match[1]);
 const hasOpenStreetMapAttribution = hrefValues.some(value => {
   try {
     const url = new URL(value, "https://ryotamatsuki.github.io/");
