@@ -1,0 +1,121 @@
+name: Whole-origin repository CodeQL inventory
+on:
+  pull_request:
+    paths:
+      - .github/workflows/full-origin-codeql.yml
+  workflow_dispatch:
+  schedule:
+    - cron: "15 5 * * 2"
+permissions:
+  contents: read
+jobs:
+  inspect:
+    name: ${{ matrix.repo }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include:
+          - { repo: "ryotamatsuki.github.io", ref: "main" }
+          - { repo: "test", ref: "main" }
+          - { repo: "map-of-salesman-in-matsuyama-and-toon", ref: "main" }
+          - { repo: "cancertest", ref: "main" }
+          - { repo: "imabarityme", ref: "main" }
+          - { repo: "airportgolf", ref: "main" }
+          - { repo: "airportgolf1", ref: "main" }
+          - { repo: "childcarematsuyama", ref: "main" }
+          - { repo: "3d_tsunami", ref: "main" }
+          - { repo: "openstreet", ref: "main" }
+          - { repo: "lpsample", ref: "main" }
+          - { repo: "orange", ref: "main" }
+          - { repo: "ryota.openstreet", ref: "main" }
+          - { repo: "kamijimatest", ref: "main" }
+          - { repo: "kamijimatoshi_v2", ref: "main" }
+          - { repo: "qgisgaikokujin", ref: "main" }
+          - { repo: "qgisgaikokujin2", ref: "main" }
+          - { repo: "matsuyamastationaroundmap", ref: "main" }
+          - { repo: "codextest_a", ref: "main" }
+          - { repo: "webgis", ref: "main" }
+          - { repo: "360panorama", ref: "main" }
+          - { repo: "kids_typing", ref: "main" }
+          - { repo: "retro-sky-raid", ref: "main" }
+          - { repo: "solar_system", ref: "main" }
+          - { repo: "hime-star-journey", ref: "main" }
+          - { repo: "ehime_quiz", ref: "main" }
+          - { repo: "yokaizukan", ref: "main" }
+          - { repo: "star-wing", ref: "main" }
+          - { repo: "kumamotoshienmap", ref: "main" }
+          - { repo: "ehime-evacuation-risk-map", ref: "main" }
+          - { repo: "ehime-mobility-resilience-lab", ref: "main" }
+          - { repo: "ehime-aed-rescue-map", ref: "main" }
+          - { repo: "ehime-civil-works-monitor", ref: "main" }
+          - { repo: "economic-theory-research-dashboard", ref: "main" }
+          - { repo: "plateau_matsuyama", ref: "main" }
+          - { repo: "racegame", ref: "main" }
+          - { repo: "racegameastra", ref: "main" }
+          - { repo: "house-", ref: "main" }
+          - { repo: "furusatonozei", ref: "main" }
+          - { repo: "-astra-wetland-lake", ref: "main" }
+          - { repo: "yokaschlool", ref: "main" }
+          - { repo: "matsuyamacastle-", ref: "main" }
+          - { repo: "sakefolio", ref: "test/sakefolio-pages-preview" }
+    steps:
+      - name: Checkout public sibling repository
+        uses: actions/checkout@v4
+        with:
+          repository: ryotamatsuki/${{ matrix.repo }}
+          ref: ${{ matrix.ref }}
+          persist-credentials: false
+      - name: Init CodeQL JS/TS
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+          queries: security-extended
+      - name: Analyze source without uploading cross-repository alerts
+        uses: github/codeql-action/analyze@v4
+        with:
+          upload: never
+          upload-database: false
+      - name: Build bounded report and fail on any security-severity finding
+        env:
+          AUDIT_REPO: ${{ matrix.repo }}
+          AUDIT_REF: ${{ matrix.ref }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const reportFile='../results/javascript.sarif';
+          if(!fs.existsSync(reportFile))throw Error('No SARIF output: cannot report zero');
+          const sarif=JSON.parse(fs.readFileSync(reportFile,'utf8'));
+          if (!Array.isArray(sarif.runs)||!sarif.runs.length)throw Error('Empty SARIF runs');
+          const findings=[],unclassified=[];
+          for(const run of sarif.runs){
+            const allRules=[run.tool?.driver,...(run.tool?.extensions||[])].filter(Boolean).flatMap(x=>x.rules||[]);
+            for(const finding of run.results||[]){
+              const rule=allRules.find(x=>x.id===finding.ruleId);
+              if(!rule){unclassified.push(finding.ruleId);continue}
+              const sev=Number(rule.properties?.['security-severity']??0);
+              if(!Number.isFinite(sev)){unclassified.push(finding.ruleId);continue}
+              if(sev>0)findings.push({
+                rule:finding.ruleId,securitySeverity:sev,
+                location:finding.locations?.[0]?.physicalLocation?.artifactLocation?.uri||null,
+                line:finding.locations?.[0]?.physicalLocation?.region?.startLine||null
+              });
+            }
+          }
+          const result={repository:process.env.AUDIT_REPO,ref:process.env.AUDIT_REF,
+            securityFindings:findings.length,highCritical:findings.filter(x=>x.securitySeverity>=7).length,
+            unclassified,findings};
+          fs.mkdirSync('security-reports',{recursive:true});
+          fs.writeFileSync('security-reports/codeql.json',JSON.stringify(result,null,2)+'\n');
+          console.log(JSON.stringify({...result,findings:findings.slice(0,30)},null,2));
+          if(findings.length||unclassified.length)process.exitCode=1;
+          NODE
+      - name: Preserve only rule metadata for remediation
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: codeql-${{ matrix.repo }}
+          path: security-reports/codeql.json
+          if-no-files-found: warn
