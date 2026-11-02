@@ -1,0 +1,25 @@
+name: External JavaScript SHA384/SRI inventory
+on:
+  push:
+    paths:
+      - scripts/generate-external-js-sri.mjs
+      - .github/workflows/external-js-sri.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --check scripts/generate-external-js-sri.mjs
+      - run: node scripts/generate-external-js-sri.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: external-script-sri-report
+          path: security-reports/external-script-sri.json
