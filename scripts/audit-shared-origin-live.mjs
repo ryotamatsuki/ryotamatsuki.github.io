@@ -20,7 +20,7 @@ const paths = [
  "/furusatonozei/", "/-astra-wetland-lake/", "/yokaschlool/",
  "/matsuyamacastle-/", "/sakefolio/", "/sakefolio/security-test-20261019/"
 ];
-const maxBytes = 4_000_000;
+const maxBytes = 8_000_000; // Large generated map/analytics pages exceed 4 MB.
 const all = [];
 const errors = [];
 const sha = data => crypto.createHash("sha256").update(data).digest("hex");
