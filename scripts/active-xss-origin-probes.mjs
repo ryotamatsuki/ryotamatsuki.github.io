@@ -41,7 +41,7 @@ await check('/qgisgaikokujin2/',(attack)=>{
  host.remove();
  return res;
 });
-await check('/codextest_a/',(attack)=>{
+await check('/codextest_a/',async (attack)=>{
  window.__originXssProbe=0;
  const script=await (await fetch('/codextest_a/main.js')).text();
  const start=script.indexOf('const escapeHTML = ');
