@@ -22,5 +22,15 @@ const high = alerts.filter(x=>{
  const sev=String(x.rule?.security_severity_level || '').toLowerCase();
  return sev==='high'||sev==='critical';
 });
-console.log(JSON.stringify({repository,allOpenAlerts:alerts.length,unresolvedHighCritical:high.length,numbers:high.map(x=>x.number)}));
+console.log(JSON.stringify({
+ repository,allOpenAlerts:alerts.length,unresolvedHighCritical:high.length,
+ findings:high.map(x=>({
+  number:x.number,
+  rule:x.rule?.id,
+  severity:x.rule?.security_severity_level,
+  path:x.most_recent_instance?.location?.path,
+  start_line:x.most_recent_instance?.location?.start_line,
+  message:String(x.most_recent_instance?.message?.text||x.rule?.description||'').slice(0,300)
+ }))
+},null,2));
 if(high.length) process.exitCode = 1;
