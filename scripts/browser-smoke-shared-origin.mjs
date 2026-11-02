@@ -9,6 +9,23 @@ const sites=[
  '/kids_typing/', '/360panorama/', '/solar_system/', '/economic-theory-research-dashboard/',
  '/ehime-civil-works-monitor/', '/furusatonozei/', '/plateau_matsuyama/',
  '/house-/', '/ehime-evacuation-risk-map/', '/star-wing/',
+ '/-astra-wetland-lake/',
+ '/3d_tsunami/',
+ '/airportgolf/',
+ '/airportgolf1/',
+ '/childcarematsuyama/',
+ '/hime-star-journey/',
+ '/imabarityme/',
+ '/kamijimatest/',
+ '/kamijimatoshi_v2/',
+ '/kumamotoshienmap/',
+ '/map-of-salesman-in-matsuyama-and-toon/',
+ '/matsuyamacastle-/',
+ '/qgisgaikokujin/',
+ '/racegame/',
+ '/racegameastra/',
+ '/retro-sky-raid/',
+ '/sakefolio/',
  '/sakefolio/security-test-20261019/', '/security-origin-audit/'
 ];
 const origin='https://ryotamatsuki.github.io';
