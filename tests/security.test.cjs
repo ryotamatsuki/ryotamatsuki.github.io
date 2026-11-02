@@ -25,7 +25,7 @@ test('portfolio script is valid JavaScript',()=>assert.doesNotThrow(()=>new Func
 
 test('game UUID identifiers use Web Crypto rather than Math.random',()=>{
   const bundle=fs.readFileSync(path.join(__dirname,'..','racegame','assets','index-B8AWxuvp.js'),'utf8');
-  const start=bundle.indexOf('function qt(){');
+  const start=bundle.indexOf('function qt(){const u=globalThis.crypto.getRandomValues');
   const end=bundle.indexOf('}function G(',start);
   assert.ok(start >= 0 && end > start,'Three.js generateUUID bundle function found');
   const uuidCode=bundle.slice(start,end+1);
