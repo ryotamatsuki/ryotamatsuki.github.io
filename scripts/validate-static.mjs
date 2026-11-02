@@ -23,7 +23,18 @@ if (!/<script[^>]+src="projects\.js"/.test(html) || !/<script[^>]+src="project-d
 }
 if (!/<dialog[^>]+id="project-dialog"/i.test(html)) errors.push("project detail dialog is missing");
 if (!/id="project-dialog-content"/.test(html)) errors.push("project detail dialog content target is missing");
-if (!/https:\/\/www\.openstreetmap\.org\/copyright/.test(html)) errors.push("OpenStreetMap copyright/license link is missing");
+// Validate URL origin and pathname, not a host substring that an attacker can prefix.
+const hrefValues = [...html.matchAll(/\\bhref="([^"]+)"/g)].map(match => match[1]);
+const hasOpenStreetMapAttribution = hrefValues.some(value => {
+  try {
+    const url = new URL(value, "https://ryotamatsuki.github.io/");
+    return url.protocol === "https:" && url.hostname === "www.openstreetmap.org"
+      && url.pathname === "/copyright" && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+});
+if (!hasOpenStreetMapAttribution) errors.push("OpenStreetMap copyright/license link is missing");
 if (/\.card-[a-z0-9](?:\s|\{|,)/.test(css)) errors.push("project-specific card CSS is not allowed");
 
 if (!screenshotConfig.viewport || !Number.isFinite(screenshotConfig.viewport.width) || !Number.isFinite(screenshotConfig.viewport.height)) {
