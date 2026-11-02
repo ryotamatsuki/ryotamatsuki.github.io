@@ -22,3 +22,15 @@ test('project URLs and image sources are validated', () => {
   assert.doesNotMatch(source,/href="\$\{escapeHTML\(project\.(appUrl|repoUrl)\)\}"/);
 });
 test('portfolio script is valid JavaScript',()=>assert.doesNotThrow(()=>new Function(source)));
+
+test('game UUID identifiers use Web Crypto rather than Math.random',()=>{
+  const bundle=fs.readFileSync(path.join(__dirname,'..','racegame','assets','index-B8AWxuvp.js'),'utf8');
+  const start=bundle.indexOf('function qt(){');
+  const end=bundle.indexOf('}function G(',start);
+  assert.ok(start >= 0 && end > start,'Three.js generateUUID bundle function found');
+  const uuidCode=bundle.slice(start,end+1);
+  assert.match(uuidCode,/globalThis\.crypto\.getRandomValues\(new Uint32Array\(4\)\)/);
+  assert.doesNotMatch(uuidCode,/Math\.random\s*\(/);
+  const html=fs.readFileSync(path.join(__dirname,'..','racegame','index.html'),'utf8');
+  assert.match(html,/index-B8AWxuvp\.js\?v=20261102-csprng/);
+});
