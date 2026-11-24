@@ -84,3 +84,7 @@ RYOTA LAB の各カードから外部サイトへ直接飛ばすのではなく�
 ## 維持ルール
 
 新しいカードを追加したときは `projects.js` だけでなく `project-details.js` に詳細を追加する。詳細が欠けた場合は `npm run qa` が失敗する。
+
+
+## 2026-11-24 editorial refresh
+Retain the detail contract and native dialog; card overview and documented public demo now have independent controls. The `prefecture-fund-analysis` entry is grounded in the public `saiken/README.md` (R4–R6 nationwide statistics and R7–R8 public-material exploration). No deployment URL is asserted. The research section collects the existing Research-tagged artifacts separately.

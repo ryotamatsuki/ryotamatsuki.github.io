@@ -10,6 +10,7 @@ const config = JSON.parse(await fs.readFile(path.join(scriptDir, "screenshot-con
 const projectsSource = await fs.readFile(path.join(repoRoot, "projects.js"), "utf8");
 const sandbox = { window: {} };
 vm.runInNewContext(projectsSource, sandbox);
+vm.runInNewContext(await fs.readFile(path.join(repoRoot, "project-detail-overrides.js"), "utf8"), sandbox);
 const projects = new Map((sandbox.window.RYOTA_PROJECTS || []).map(project => [project.id, project]));
 
 const browser = await chromium.launch({ headless: true });

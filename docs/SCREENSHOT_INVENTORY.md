@@ -73,3 +73,7 @@ Featuredは3件を維持し、避難・交通・ふるさと納税の3件とす�
 - `solar-system`
 
 画像がない場合も共通の描画経路でカードが成立し、プロジェクトの追加・削除でCSSを編集する必要はない。
+
+
+## 2026-11-24 editorial refresh
+Selected Work is now Matsuyama Castle 3D WALK, Furusato Nozei, AED Rescue Map. The latter two retain the previously reviewed local WebP assets. The castle uses the source repo's CI screenshot documented in its README, pinned to commit `0289e69f904c5fb816cf22e5417673055df554b3`. This is a provisional owner-controlled remote image; the PNG has not been visually re-reviewed here, and the runtime includes a fallback if it fails. Additional capture targets for PLATEAU, Civil Works Monitor, the event AI and the castle have been configured; do not mark their fresh screenshots as reviewed or optimized until actually captured and inspected.

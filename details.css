@@ -426,3 +426,17 @@ body.project-dialog-open { overflow: hidden; }
   .detail-cta,
   .project-dialog-close { transition: none; }
 }
+
+/* Editorial modal readability and clear, persistent actions. */
+.project-dialog,.project-dialog-panel{border-radius:12px}
+.detail-head h2,.detail-head-only h2{font-weight:650}
+.detail-lead,.detail-section p,.detail-list li,.detail-steps li{font-size:14px;line-height:1.85}
+.detail-section h3{font-size:18px}
+.detail-section-label,.detail-host,.detail-chips span,.detail-note strong{font-size:12px}
+.detail-note p,.detail-no-app{font-size:13px}
+.detail-section-problem{background:var(--surface-2)}
+.detail-cta{font-size:14px;border-radius:6px}
+.detail-cta-primary{background:var(--ink);box-shadow:none}
+.detail-cta-primary:hover{background:#45443f}
+.detail-actions{background:var(--surface)}
+@media(max-width:760px){.project-dialog,.project-dialog-panel{border-radius:12px 12px 0 0}.detail-head,.detail-body{padding-inline:20px}.detail-actions{padding-inline:16px}}

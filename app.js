@@ -11,6 +11,7 @@
   const featuredGrid = document.getElementById("featured-grid");
   const projectGrid = document.getElementById("project-grid");
   const archiveGrid = document.getElementById("archive-grid");
+  const researchGrid = document.getElementById("research-grid");
   const emptyState = document.getElementById("empty-state");
   const searchInput = document.getElementById("project-search");
   const filterButtons = [...document.querySelectorAll(".filter-button")];
@@ -60,9 +61,14 @@
     ? `<span class="image-attribution">${escapeHTML(project.imageAttribution)}</span>`
     : "";
 
-  const visualMarkup = (project, type, loading = "lazy") => safeURL(project.image)
-    ? `<div class="${type}-visual has-image">${imageMarkup(project, loading)}</div>`
-    : `<div class="${type}-visual ${visualClass(project.visual)}"></div>`;
+  const visualMarkup = (project, type, loading = "lazy") => {
+    const image = safeURL(project.image);
+    // Pin an owner-created screenshot to its source commit; no third-party assets.
+    const preview = typeof project.previewUrl === "string" && /^https:\/\/raw\.githubusercontent\.com\/ryotamatsuki\/[a-zA-Z0-9_-]+\/[a-f0-9]{40}\/public\/screenshots\/[a-zA-Z0-9_.-]+\.png$/.test(project.previewUrl) ? project.previewUrl : "";
+    return image ? `<div class="${type}-visual has-image">${imageMarkup(project, loading)}</div>`
+      : preview ? `<div class="${type}-visual ${visualClass(project.visual)} has-image"><img class="project-image remote-preview" src="${escapeHTML(preview)}" alt="" loading="${loading}" referrerpolicy="no-referrer"></div>`
+      : `<div class="${type}-visual ${visualClass(project.visual)}"></div>`;
+  };
 
   const listMarkup = (items = [], ordered = false) => {
     if (!Array.isArray(items) || items.length === 0) return "";
@@ -235,6 +241,18 @@
     }
   }
 
+  const isResearch = project => project.categories.includes("Research");
+  const matchesCategory = (project, category) => {
+    if (category === "all") return true;
+    if (category === "civic") return project.categories.includes("行政・防災") || project.categories.includes("交通");
+    if (category === "geo") return project.categories.includes("GIS") || ["matsuyama-castle-3d-walk","360panorama","stillwater-lake","rural-house-walk"].includes(project.id);
+    if (category === "finance") return project.categories.includes("財政・EBPM") || ["furusatonozei","ehime-civil-works-monitor","ehime-aed-rescue-map","ehime-evacuation-risk-map","ehime-mobility-resilience-lab","localgovernant","city-annalist"].includes(project.id);
+    if (category === "play") return project.categories.includes("ゲーム") || project.categories.includes("教育");
+    return project.categories.includes(category);
+  };
+  const directDemo = (project) => safeURL(project.appUrl) ?
+    `<a class="demo-link" href="${escapeHTML(safeURL(project.appUrl))}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}の公開デモを開く">試す <span aria-hidden="true">↗</span></a>` : "";
+
   function renderFeatured() {
     const featured = projects
       .filter(project => project.featured && project.status !== "archive")
@@ -242,25 +260,21 @@
       .slice(0, 3);
 
     featuredGrid.innerHTML = featured.map(project => `
-      <button
-        class="featured-card detail-trigger"
-        type="button"
-        data-detail-id="${escapeHTML(project.id)}"
-        aria-haspopup="dialog"
-        aria-label="${escapeHTML(project.title)}の概要を見る"
-      >
-        ${visualMarkup(project, "featured", "eager")}
-        ${attributionMarkup(project)}
+      <article class="featured-card">
+        <button class="featured-media detail-trigger" type="button" data-detail-id="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="${escapeHTML(project.title)}の概要を見る">
+          ${visualMarkup(project, "featured", "eager")}
+          ${attributionMarkup(project)}
+        </button>
         <div class="featured-content">
-          <div class="badge-row">
-            <span class="badge category">${escapeHTML(project.categories[0] || "Project")}</span>
-            <span class="badge ${statusClass(project.status)}">${statusLabel(project.status)}</span>
-          </div>
+          <div class="featured-meta">${escapeHTML(project.categories[0] || "Project")} · ${statusLabel(project.status)}</div>
           <h3>${escapeHTML(project.title)}</h3>
           <p>${escapeHTML(project.description)}</p>
-          <span class="open-link">概要を見る <span aria-hidden="true">→</span></span>
+          <div class="featured-actions">
+            ${directDemo(project)}
+            <button class="detail-link detail-trigger" type="button" data-detail-id="${escapeHTML(project.id)}" aria-haspopup="dialog">概要を見る <span aria-hidden="true">→</span></button>
+          </div>
         </div>
-      </button>
+      </article>
     `).join("");
   }
 
@@ -291,7 +305,7 @@
             >
               概要を見る <span aria-hidden="true">→</span>
             </button>
-            ${safeURL(project.repoUrl) ? `<a class="github-link" href="${escapeHTML(safeURL(project.repoUrl))}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}のGitHubリポジトリ">◉ GitHub</a>` : ""}
+            ${directDemo(project) || (safeURL(project.repoUrl) ? `<a class="github-link" href="${escapeHTML(safeURL(project.repoUrl))}" target="_blank" rel="noopener" aria-label="${escapeHTML(project.title)}のGitHubリポジトリ">GitHub ↗</a>` : "")}
           </div>
         </div>
       </article>
@@ -300,8 +314,8 @@
 
   function renderProjects() {
     const visible = projects.filter(project => {
-      if (project.status === "archive") return false;
-      const filterMatch = activeFilter === "all" || project.categories.includes(activeFilter);
+      if (project.status === "archive" || isResearch(project)) return false;
+      const filterMatch = matchesCategory(project, activeFilter);
       const queryMatch = !query || detailSearchText(project).includes(query);
       return filterMatch && queryMatch;
     });
@@ -310,8 +324,12 @@
     emptyState.hidden = visible.length > 0;
   }
 
+  function renderResearch() {
+    if (researchGrid) researchGrid.innerHTML = projects.filter(isResearch).map(cardTemplate).join("");
+  }
+
   function renderArchive() {
-    const archived = projects.filter(project => project.status === "archive");
+    const archived = projects.filter(project => project.status === "archive" && !isResearch(project));
     archiveGrid.innerHTML = archived.map(cardTemplate).join("");
   }
 
@@ -322,9 +340,10 @@
   }
 
   filterButtons.forEach(button => {
+    button.setAttribute("aria-pressed", String(button.classList.contains("is-active")));
     button.addEventListener("click", () => {
       activeFilter = button.dataset.filter || "all";
-      filterButtons.forEach(item => item.classList.toggle("is-active", item === button));
+      filterButtons.forEach(item => { item.classList.toggle("is-active", item === button); item.setAttribute("aria-pressed", String(item === button)); });
       renderProjects();
     });
   });
@@ -364,8 +383,13 @@
     });
   }
 
+  // Capturing handler covers dynamically rendered cards and the detail dialog.
+  document.addEventListener("error", event => {
+    if (event.target instanceof HTMLImageElement && event.target.classList.contains("remote-preview")) event.target.hidden = true;
+  }, true);
   renderFeatured();
   renderProjects();
   renderArchive();
+  renderResearch();
   updateStats();
 })();

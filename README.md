@@ -75,10 +75,10 @@ When adding an image, first confirm that the screen contains no unlicensed third
 
 ## Design principles
 
-- Featured projects use a fixed 3-card Bento composition.
+- Featured projects use a three-work editorial layout with a wide lead image and two supporting works.
 - All other projects use a responsive auto-fit grid.
 - Cards have fixed thumbnail proportions and clamped content structure.
-- Card primary interaction is `概要を見る`; the external app CTA lives in the detail dialog.
+- Cards retain `概要を見る` and provide a separate direct demo action for projects with a documented deployment; the detail dialog retains its own CTA.
 - Desktop uses a centered detail modal; mobile uses a near-fullscreen bottom sheet.
 - The native dialog supports Escape, backdrop close, explicit close control and focus return.
 - Archive projects are kept out of the main grid.
@@ -92,3 +92,7 @@ npm run qa
 ```
 
 `npm run qa` validates project IDs, status values, repository links, app-link contracts, featured count, detail coverage/content, local WebP assets, HTML IDs, detail dialog assets and local references. If Playwright and its browser are installed, `npm run capture:screenshots` uses `scripts/screenshot-config.json` to reproduce the approved capture states; optimize reviewed PNGs to WebP before promoting them to `assets/projects/`.
+
+## November 2026 editorial refresh
+
+See `DESIGN.md` for the warm editorial visual system, category navigation, direct demo behavior, provenance, and screenshot policy. The original August audits are historical; September and November records are in runtime overrides. New capture targets are configuration only until capture, rights review and optimization have succeeded.
