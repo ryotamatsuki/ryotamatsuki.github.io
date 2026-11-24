@@ -383,10 +383,13 @@
     });
   }
 
+  // Capturing handler covers dynamically rendered cards and the detail dialog.
+  document.addEventListener("error", event => {
+    if (event.target instanceof HTMLImageElement && event.target.classList.contains("remote-preview")) event.target.hidden = true;
+  }, true);
   renderFeatured();
   renderProjects();
   renderArchive();
   renderResearch();
   updateStats();
-  document.querySelectorAll(".remote-preview").forEach(img => { img.addEventListener("error", () => { img.hidden = true; }); if (img.complete && !img.naturalWidth) img.hidden = true; });
 })();
