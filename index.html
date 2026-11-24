@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f6f2">
+  <meta name="theme-color" content="#f8f6ef">
   <meta name="description" content="RYOTA LAB — 愛媛から、Civic Tech・AI・Data・Gamesをつくる個人プロジェクトポータル。">
   <meta property="og:title" content="RYOTA LAB — Civic Tech, AI, Data & Games">
-  <meta property="og:description" content="愛媛から、行政・地域課題をコードで実験する。">
+  <meta property="og:description" content="行政課題を、AIとコードで形にする。">
   <title>RYOTA LAB — Civic Tech, AI, Data & Games</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,9 @@
         <span>RYOTA LAB</span>
       </a>
       <nav class="main-nav" aria-label="メインナビゲーション">
-        <a href="#projects">Projects</a>
+        <a href="#featured-title">Work</a>
+        <a href="#projects">Products</a>
+        <a href="#research">Research</a>
         <a href="#about">About</a>
         <a href="https://github.com/ryotamatsuki" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
@@ -31,10 +33,11 @@
     <main>
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">PERSONAL PRODUCT LAB / EHIME</p>
-          <h1 id="hero-title">Civic Tech, AI,<br>Data &amp; Games</h1>
-          <p class="hero-lead">愛媛から、行政・地域課題をコードで実験する。</p>
-          <p class="hero-sub">地域をもっと良く、面白く。公開データ、AI、WebGIS、ゲームを横断して、小さなプロダクトをつくっています。</p>
+          <p class="eyebrow">INDEPENDENT PRODUCT LAB / EHIME</p>
+          <h1 id="hero-title">Ideas into<br>reality.</h1>
+          <p class="hero-lead">行政課題を、AIとコードで形にする。</p>
+          <p class="hero-sub">公開データ、生成AI、GIS、財政分析、3D技術を横断し、地域課題の解決可能性を動くプロトタイプで検証する個人開発ラボです。</p>
+          <div class="hero-actions"><a class="primary-action" href="#featured-title">代表作品を見る <span aria-hidden="true">↓</span></a><a class="quiet-action" href="#about">このラボについて</a></div>
 
           <div class="stats" aria-label="プロジェクト統計">
             <div class="stat">
@@ -61,37 +64,29 @@
       <section class="featured-section" aria-labelledby="featured-title">
         <div class="section-heading">
           <div>
-            <p class="section-kicker">SELECTED WORK</p>
-            <h2 id="featured-title">注目プロジェクト</h2>
+            <p class="section-kicker">01 / SELECTED WORK</p>
+            <h2 id="featured-title">代表作品</h2>
           </div>
-          <p>概要と使い方を確認してから、実際のアプリを試せます。</p>
+          <p>課題を起点に、動くものをつくる。公開デモを直接試せます。</p>
         </div>
         <div id="featured-grid" class="featured-grid"></div>
       </section>
 
       <section id="projects" class="projects-section" aria-labelledby="projects-title">
+        <div class="section-heading project-heading">
+          <div><p class="section-kicker">02 / EXPLORE THE LAB</p><h2 id="projects-title">プロジェクトを探す</h2></div>
+          <label class="search-box"><span class="sr-only">プロジェクトを検索</span><input id="project-search" type="search" placeholder="作品・技術を検索" autocomplete="off"></label>
+        </div>
         <div class="filter-bar" aria-label="プロジェクトカテゴリ">
           <button class="filter-button is-active" type="button" data-filter="all">すべて</button>
-          <button class="filter-button" type="button" data-filter="行政・防災">行政・防災</button>
-          <button class="filter-button" type="button" data-filter="交通">交通</button>
-          <button class="filter-button" type="button" data-filter="AI">AI</button>
-          <button class="filter-button" type="button" data-filter="GIS">GIS</button>
-          <button class="filter-button" type="button" data-filter="ゲーム">ゲーム</button>
-          <button class="filter-button" type="button" data-filter="教育">教育</button>
+          <button class="filter-button" type="button" data-filter="civic">行政・政策</button>
+          <button class="filter-button" type="button" data-filter="AI">AI Engineering</button>
+          <button class="filter-button" type="button" data-filter="geo">GIS・3D</button>
+          <button class="filter-button" type="button" data-filter="finance">財政・EBPM</button>
+          <button class="filter-button" type="button" data-filter="play">Playground・教育</button>
         </div>
 
-        <div class="section-heading project-heading">
-          <div>
-            <p class="section-kicker">ALL PROJECTS</p>
-            <h2 id="projects-title">プロジェクト一覧</h2>
-          </div>
-          <label class="search-box">
-            <span class="sr-only">プロジェクトを検索</span>
-            <input id="project-search" type="search" placeholder="Search projects…" autocomplete="off">
-          </label>
-        </div>
-
-        <p class="project-guide"><strong>概要を見る</strong><span>を押すと、課題・目的・できること・使い方・データ・技術を確認できます。外部アプリへ移動する前に操作方法を把握できます。</span></p>
+        <p class="project-guide"><strong>概要</strong><span>で課題・方法・技術を確認。公開デモがある作品は「試す」から直接体験できます。</span></p>
 
         <div id="project-grid" class="project-grid" aria-live="polite"></div>
         <p id="empty-state" class="empty-state" hidden>条件に一致するプロジェクトがありません。</p>
@@ -107,11 +102,23 @@
         <div id="archive-grid" class="project-grid archive-grid" hidden></div>
       </section>
 
+      <section id="research" class="research-section" aria-labelledby="research-title">
+        <div class="section-heading"><div><p class="section-kicker">03 / RESEARCH</p><h2 id="research-title">研究と分析</h2></div><p>経済理論・地域産業政策・再現性のある分析。</p></div>
+        <div id="research-grid" class="project-grid"></div>
+      </section>
+      <section id="method" class="method-section" aria-labelledby="method-title">
+        <div class="section-heading"><div><p class="section-kicker">04 / DEVELOPMENT NOTES</p><h2 id="method-title">課題から、検証まで。</h2></div></div>
+        <div class="method-grid">
+          <article><span>01 / DISCOVER</span><h3>行政課題を見つける</h3><p>現場の疑問を、検証可能な問いに分解する。</p></article>
+          <article><span>02 / BUILD</span><h3>AIと公開データで試作</h3><p>小さく動くものを作り、必要なデータ・機能・制約を明確にする。</p></article>
+          <article><span>03 / VERIFY</span><h3>根拠と限界を確認する</h3><p>出典、推計条件、テストを明示し、実績・仮定・推定を区別する。</p></article>
+        </div>
+      </section>
       <section id="about" class="about-section" aria-labelledby="about-title">
         <div class="about-card">
           <p class="section-kicker">ABOUT RYOTA LAB</p>
           <h2 id="about-title">課題を見つけたら、まず小さくつくる。</h2>
-          <p>行政・防災・交通・データ可視化から、教育やゲームまで。分野を固定せず、公開データとコードで「実際に触れるもの」にすることを重視しています。</p>
+          <p>行政・防災・交通・データ可視化から、教育やゲームまで。分野を固定せず、公開データとコードで「実際に触れるもの」にすることを重視しています。</p><p class="independent-note">掲載作品は個人の研究・開発・技術検証です。所属自治体その他の行政機関の公式サービスではありません。個別の作品に記載されたデータの時点・推計条件・利用上の注意を確認してください。</p>
           <div class="about-links">
             <a class="text-link" href="https://github.com/ryotamatsuki" target="_blank" rel="noopener">GitHubを見る <span aria-hidden="true">↗</span></a>
             <a class="text-link" href="#projects">プロジェクトを見る <span aria-hidden="true">↓</span></a>
