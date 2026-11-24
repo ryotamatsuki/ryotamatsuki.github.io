@@ -37,7 +37,10 @@
       "selector": "body",
       "focalPoint": "56% 48%",
       "actions": [
-        { "type": "clickText", "text": "金額分布" }
+        {
+          "type": "clickText",
+          "text": "金額分布"
+        }
       ],
       "delayMs": 1800
     },
@@ -53,7 +56,10 @@
       "selector": "body",
       "focalPoint": "50% 42%",
       "actions": [
-        { "type": "clickText", "text": "はじめから" }
+        {
+          "type": "clickText",
+          "text": "はじめから"
+        }
       ],
       "delayMs": 1000
     },
@@ -70,10 +76,44 @@
       "selector": "body",
       "focalPoint": "50% 48%",
       "actions": [
-        { "type": "press", "key": "Space" },
-        { "type": "press", "key": "Enter" }
+        {
+          "type": "press",
+          "key": "Space"
+        },
+        {
+          "type": "press",
+          "key": "Enter"
+        }
       ],
       "delayMs": 1000
+    },
+    {
+      "id": "matsuyama-castle-3d-walk",
+      "output": "artifacts/screenshots/matsuyama-castle-3d-walk.png",
+      "selector": "body",
+      "focalPoint": "50% 50%",
+      "delayMs": 12000
+    },
+    {
+      "id": "plateau-matsuyama",
+      "output": "artifacts/screenshots/plateau-matsuyama.png",
+      "selector": "body",
+      "focalPoint": "50% 50%",
+      "delayMs": 12000
+    },
+    {
+      "id": "ehime-civil-works-monitor",
+      "output": "artifacts/screenshots/ehime-civil-works-monitor.png",
+      "selector": "body",
+      "focalPoint": "50% 50%",
+      "delayMs": 12000
+    },
+    {
+      "id": "ehime-kokubunsai-ai-poc",
+      "output": "artifacts/screenshots/ehime-kokubunsai-ai-poc.png",
+      "selector": "body",
+      "focalPoint": "50% 50%",
+      "delayMs": 18000
     }
   ]
 }
