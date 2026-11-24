@@ -438,4 +438,29 @@
     howToUse: ["Streamlit公開アプリを開きます。", "Raw Data、Calorie Distribution、Nutrition Totals、Meal Behavior等のタブを切り替えます。", "食事記録と食行動ログを時系列で比較します。"],
     notes: "公開Streamlitから直接閲覧できます。分析用の試作ダッシュボードであり、医療・栄養指導を行うものではありません。"
   });
+  // November editorial refresh. Keep the evidence-rich September records.
+  for (const p of projects) p.featured = false;
+  patchProject("matsuyama-castle-3d-walk", {
+    featured: 1,
+    previewUrl: "https://raw.githubusercontent.com/ryotamatsuki/matsuyamacastle-/0289e69f904c5fb816cf22e5417673055df554b3/public/screenshots/chromium-exterior.png",
+    categories: ["教育", "ゲーム", "GIS"]
+  });
+  patchProject("furusatonozei", { featured: 2, categories: ["財政・EBPM", "行政・防災", "GIS"] });
+  patchProject("ehime-aed-rescue-map", { featured: 3, categories: ["行政・防災", "GIS", "財政・EBPM"] });
+  patchProject("ehime-civil-works-monitor", { categories: ["行政・防災", "GIS", "財政・EBPM"] });
+  addProject({
+    id: "prefecture-fund-analysis", title: "都道府県基金・債券運用分析",
+    description: "47都道府県の基金・公金運用を公表資料で比較する、再現可能な財政分析。",
+    categories: ["財政・EBPM"], status: "poc", host: "GitHub", featured: false, visual: "chart",
+    appUrl: null, repoUrl: "https://github.com/ryotamatsuki/saiken"
+  });
+  setDetail("prefecture-fund-analysis", {
+    problem: "都道府県の基金・公金の運用状況は統計と個別の公表資料に分散し、比較が難しい。",
+    purpose: "公開資料のみから47都道府県の基金に占める有価証券や運用方針を比較し、根拠を追跡できる分析を行う。",
+    features: ["R4〜R6地方財政状況調査による都道府県比較", "R7・R8公表資料の調査と開示状況の構造化", "出典辞書・集計CSV・品質監査の保存"],
+    howToUse: ["GitHubのREADMEで調査範囲・定義を確認する。", "分析レポートやCSVを開き、出典・時点とともに比較する。"],
+    dataSources: ["総務省・e-Stat地方財政状況調査", "都道府県の公式サイト・決算・監査・公金管理資料"],
+    tech: ["公開データ分析", "CSV", "再現性検証"],
+    notes: "個人の公開情報分析です。年度末有価証券残高は国債購入額や年間平均債券残高ではありません。内部資料は使用していません。"
+  });
 })();
