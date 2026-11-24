@@ -78,3 +78,7 @@ RYOTA LAB の掲載漏れを防ぐため、`ryotamatsuki` 所有の公開リポ�
 ## 到達性の扱い
 
 GitHub APIのPages設定、リポジトリ内実装、既存デプロイ情報を突き合わせて登録する。外部URLの継続確認はLink Health workflowで扱う。
+
+
+## 2026-11-24 editorial refresh
+The August inventory is historical, not an assertion of current coverage. September additions are in `project-detail-overrides.js`; November adds `saiken` as a public repo-only fiscal analysis and separates Research from the main product catalog. Private repositories remain excluded. A complete new repository-wide inventory and live endpoint audit is still outstanding.
